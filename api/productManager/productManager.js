@@ -1,6 +1,66 @@
 const fs = require('fs')
 const express = require('express')
-const app = express()
+const { Router } = express
+const routerProducts = new Router()
+
+
+const bodyParser = require('body-parser');
+
+routerProducts.use(bodyParser.json());
+
+routerProducts.get('/', (req,res) => {
+    const newProduct = new productManager
+    let resp = newProduct.getProducts()
+    resp
+    .then( (pr) => {
+        res.send(pr)
+    })
+    .catch( (err) => {
+        res.send('error')
+    })
+})
+
+routerProducts.get('/:id', (req,res) => {
+    const newProduct = new productManager
+    let resp = newProduct.getProducts()
+    resp
+    .then( (pr) => {
+        res.send(pr)
+    })
+    .catch( (err) => {
+        res.send('error')
+    })
+})
+
+routerProducts.post('/', async (req,res) => {
+    const { title, description, price, thumbnail, code, stock, status, category } = req.body;
+    console.log( Object.values({title}) )
+    try{        
+        let newProduct = new productManager('./productos.json')
+        let a = await newProduct.addProducts(title, description, price, thumbnail, code, stock, status, category)
+        if(a == false){
+            res.send('error')
+        } else {
+
+            res.send('Producto agregado correctamente');
+        }
+    } catch ( err ) {
+        res.send(err)
+    }
+
+
+})
+
+routerProducts.put('/:pid', async (req,res)=>{
+    let prodId = req.params.pid
+    let prodBody = req.body
+    console.log(prodBody)
+    console.log(prodId)
+    let newProduct = new productManager('./productos.json')
+    let prod = await newProduct.getProductsById(prodId)
+    res.send(prodBody)
+})
+
 
 
 class productManager {
@@ -10,7 +70,7 @@ class productManager {
     }
 
     async addProducts(title, description, price, thumbnail, code, stock, status, category) {
-        if (title != undefined && description != undefined && price != undefined && thumbnail != undefined && code != undefined && stock != undefined) {
+        if (title != undefined && description != undefined && price != undefined && thumbnail != undefined && code != undefined && stock != undefined && status != undefined && category != undefined) {
             try {
                 this.lastId += 1
                 const newProduct = {
@@ -33,7 +93,7 @@ class productManager {
                         let a = this.products.find((x) => x.code === code) ? true : false
                         if (!a) {
                             this.products.push(newProduct)
-                            await fs.promises.writeFile('./productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
+                            await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
                             console.log('producto agregado exitosamente')
                         } else {
                             console.log('producto repetido')
@@ -45,12 +105,13 @@ class productManager {
                 } else {
                     console.log('array vacio')
                     this.products.push(newProduct)
-                    await fs.promises.writeFile('./productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
+                    await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
                     return this.products
 
                 }
             } catch (err) {
                 console.log(err)
+                return false
 
 
             }
@@ -62,8 +123,8 @@ class productManager {
 
     async getProducts() {
         try {
-            if (fs.existsSync('./productos.json')) {
-                let read = await fs.promises.readFile('./productos.json', 'utf-8')
+            if (fs.existsSync('./api/ProductManager/productos.json')) {
+                let read = await fs.promises.readFile('./api/ProductManager/productos.json', 'utf-8')
                 if (read != undefined && read != null && read.length > 0) {
                     let readParsed = JSON.parse(read)
                     readParsed = Object.values(readParsed)
@@ -91,6 +152,7 @@ class productManager {
                 return finding
             } else {
                 console.log('producto no encotrado')
+                return false
             }
 
         } catch (err) {
@@ -126,7 +188,7 @@ class productManager {
                     else {
                         console.log('error al cambiar parametro');
                     }
-                    await fs.promises.writeFile('./productos.json', JSON.stringify(this.products, null, 2), 'utf-8');
+                    await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8');
                     console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
                     return this.products[index];
                 } else {
@@ -152,7 +214,7 @@ class productManager {
                 this.products = a.concat(b);
                 console.log(`producto con id ${id}, ha sido eliminado`);
                 this.products.sort((a, b) => a.id - b.id)
-                await fs.promises.writeFile('./productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
+                await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8')
                 return this.products;
             } else {
                 console.log('id no encontrado')
@@ -177,49 +239,6 @@ async function addingFunction(title, description, price, thumbnail, code, stock,
     )
 }
 
-async function run() {
-    await addingFunction("producto prueba 1",
-        "Este es un producto prueba",
-        3000,
-        "Sin imagen",
-        "abc123",
-        25,
-        true,
-        'fruit');
-    await addingFunction("producto prueba 2",
-        "Este es un producto prueba",
-        3000,
-        "Sin imagen",
-        "abc1234",
-        25,
-        true,
-        'fruit');
-    await addingFunction("producto prueba 3",
-        "Este es un producto prueba",
-        3000,
-        "Sin imagen",
-        "abc12345",
-        25,
-        true,
-        'fruit');
-    await addingFunction("producto prueba 4",
-        "Este es un producto prueba",
-        3000,
-        "Sin imagen",
-        "abc123456",
-        25,
-        true,
-        'fruit'),
-    await addingFunction("producto prueba 5",
-        "Este es un producto prueba",
-        3000,
-        "Sin imagen",
-        "abc1234567",
-        25,
-        true,
-        'fruit')
-}
+//
 
-run()
-
-module.exports = productManager
+module.exports = { routerProducts, productManager };
