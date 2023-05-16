@@ -1,7 +1,7 @@
 const fs = require('fs')
 const express = require('express')
 const { Router } = express
-const { routerProducts, productManager } = require('../ProductManager/ProductManager')
+const productManager = require('../ProductManager/ProductManager')
 const routerCart = new Router()
 
 let cart = []
@@ -17,7 +17,7 @@ routerCart.post('/', (req, res) => {
 
 routerCart.post('/:cid/products/:pid', async (req, res) => {
     let prodId = req.params.pid
-    let prodManager = new productManager('../ProductManager/productos.json')
+    let prodManager = new productManager('../api/ProductManager/productos.json')
     try {                                                               //traigo el producto por id, si existe prosigo
         let cartManager = await prodManager.getProductsById(prodId)     //aca trae todo el producto
         if (cartManager.id != undefined && cartManager.id !== null) {
@@ -34,7 +34,7 @@ routerCart.post('/:cid/products/:pid', async (req, res) => {
             res.send(cartManager)
             return cart
         } else {
-            res.send('Id no válido')
+            res.status(500).send('Id no válido')
         }
     } catch (err) {
         console.log(err)
@@ -49,13 +49,8 @@ routerCart.get('/', async (req, res) => {
         prodInCart = JSON.parse(prodInCart)
         let totalProd = [...cart,...prodInCart]
         await fs.promises.writeFile('./api/cart/cart.json', JSON.stringify(totalProd, null, 2), 'utf-8')
-        res.send({ 'Carrito': totalProd })
+        res.status(500).send({ 'Carrito': totalProd })
 
 })
 
-
-
-
-
-
-module.exports = routerCart
+module.exports =routerCart  

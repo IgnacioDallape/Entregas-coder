@@ -1,82 +1,7 @@
 const fs = require('fs')
 const express = require('express')
 const { Router } = express
-const routerProducts = new Router()
 const uuid4 = require('uuid4');
-const bodyParser = require('body-parser');
-
-routerProducts.use(bodyParser.json());
-
-routerProducts.get('/', async (req, res) => {
-    try{
-        const newProduct = new productManager('./products.json')
-        let resp = await newProduct.getProducts()
-        res.send(resp)
-    } catch (err) {
-        res.send('error')
-    }
-    })
-
-routerProducts.get('/:pid', async (req, res) => {
-    try {
-        const newProduct = new productManager
-        let resp = await newProduct.getProductsById(req.params.pid)
-        res.send(resp)
-    } catch (err) {
-        res.send('error')
-
-    }
-})
-
-//agrego productos a mi base de datos, para lugo usarlas en el carrito
-
-routerProducts.post('/', async (req, res) => {
-    const { title, description, price, thumbnail, code, stock, status, category } = req.body;
-    console.log(Object.values({ title }))
-    try {
-        let newProduct = new productManager('./productos.json')
-        let a = await newProduct.addProducts(title, description, price, thumbnail, code, stock, status, category)
-        if (a == false) {
-            res.send('error')
-        } else {
-
-            res.send('Producto agregado correctamente');
-        }
-    } catch (err) {
-        res.send(err)
-    }
-
-
-})
-
-//modifico el producto que quiera
-
-routerProducts.put('/:pid', async (req, res) => {
-    let prodId = req.params.pid
-    let prodBody = req.body
-    let prodItem = Object.keys(prodBody)
-    let prodMod = Object.values(prodBody)
-    prodItem = JSON.stringify(prodItem[0])
-    prodMod = JSON.stringify(prodMod[0])
-    console.log(prodId)
-    console.log(prodItem)
-    console.log(prodMod)
-
-    let newProduct = new productManager('./productos.json')
-    let prod = await newProduct.updateProducts(prodItem, prodMod, prodId)
-    res.send(prodBody)
-})
-
-//elimino algun producto
-
-routerProducts.delete('/:pid', async (req, res) => {
-    let prodId = req.params.pid
-    const newProduct = new productManager('./products.json')
-    let resp = await newProduct.deleteProducts(prodId)
-    res.send('producto eliminado')
-
-})
-
 
 
 class productManager {
@@ -279,4 +204,4 @@ async function addingFunction(title, description, price, thumbnail, code, stock,
 
 //
 
-module.exports = { routerProducts, productManager };
+module.exports = productManager

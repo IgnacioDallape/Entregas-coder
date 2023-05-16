@@ -33,17 +33,6 @@
     "id": "3"
   },
   {
-    "title": "lechuga",
-    "description": "Es una lechuga",
-    "price": 200,
-    "thumbnail": "Sin imagen",
-    "code": "lechuga123",
-    "stock": 24,
-    "status": true,
-    "category": "verdura",
-    "id": "4"
-  },
-  {
     "title": "zanahoria",
     "description": "Es una zanahoria",
     "price": 100,
