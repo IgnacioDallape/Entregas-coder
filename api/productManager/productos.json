@@ -1,6 +1,6 @@
 [
   {
-    "title": "papa",
+    "title": "Papa",
     "description": "Es una papa",
     "price": 300,
     "thumbnail": "Sin imagen",
@@ -8,29 +8,7 @@
     "stock": 25,
     "status": true,
     "category": "verdura",
-    "id": "1"
-  },
-  {
-    "title": "camote",
-    "description": "Es un camote",
-    "price": 400,
-    "thumbnail": "Sin imagen",
-    "code": "camote123",
-    "stock": 12,
-    "status": true,
-    "category": "verdura",
-    "id": "2"
-  },
-  {
-    "title": "sandia",
-    "description": "Es una sandia",
-    "price": 500,
-    "thumbnail": "Sin imagen",
-    "code": "sandia123",
-    "stock": 22,
-    "status": true,
-    "category": "verdura",
-    "id": "3"
+    "id": "3f1afe10-0209-412f-8bf6-26561d24eb65"
   },
   {
     "title": "zanahoria",
@@ -41,6 +19,28 @@
     "stock": 15,
     "status": true,
     "category": "verdura",
-    "id": "5"
+    "id": "16664bb1-f66a-425d-9b70-09970e1f9488"
+  },
+  {
+    "title": "camote",
+    "description": "Es un camote",
+    "price": 400,
+    "thumbnail": "Sin imagen",
+    "code": "camote123",
+    "stock": 12,
+    "status": true,
+    "category": "verdura",
+    "id": "b55a07cc-70f8-484b-a1e6-3744300a8bf4"
+  },
+  {
+    "title": "sandia",
+    "description": "Es una sandia",
+    "price": 500,
+    "thumbnail": "Sin imagen",
+    "code": "sandia123",
+    "stock": 22,
+    "status": true,
+    "category": "verdura",
+    "id": "f98f244b-b11a-4df1-9fbc-1da702885002"
   }
 ]

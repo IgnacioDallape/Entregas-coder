@@ -1,48 +1,76 @@
 const fs = require('fs')
 const express = require('express')
 const { Router } = express
-const productManager = require('../ProductManager/ProductManager')
+const ProductManager = require('../ProductManager/ProductManager')
 const routerCart = new Router()
 const CartManager = require('./cartManager')
 
 
-//creo o vacio carrito
+//esto crea el carrito o elimina todo lo que tiene dentro
 
-routerCart.post('/', (req, res) => {
-    let cartMan = new CartManager('./cart.json')
-    let prod = cartMan.addingProductsCart()
-    try{
-        fs.promises.writeFile(__dirname + '/cart.json', JSON.stringify(cartMan),'utf-8')
-        res.send({'productos': prod})
-    } catch ( err ) {
-        console.log(err)
+routerCart.post('/', async (req, res) => {
+    try {
+        let cartMan = new CartManager();
+        await cartMan.getCartProducts();
+
+        if (cartMan.cart.length > 0) {
+            const cartJson = JSON.stringify(cartMan.cart);
+
+            fs.writeFile(__dirname + '/cart.json', cartJson, 'utf-8', async (err) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al escribir en el archivo');
+                } else {
+                    let cartData = await fs.readFile(__dirname + '/cart.json', 'utf-8');
+                    res.send({ productos: JSON.parse(cartData) });
+                }
+            });
+        } else {
+            fs.writeFile(__dirname + '/cart.json', '', 'utf-8', (err) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al escribir en el archivo');
+                } else {
+                    res.send({ productos: [] });
+                }
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Error en el servidor');
     }
-})
+});
+
+
+
 
 //le agrego productos con el id de los que estan cargados en productos.json
 
 routerCart.post('/:cid/products/:pid', async (req, res) => {
     let prodId = req.params.pid
-    let prodManager = new CartManager('./cart.json')
+    let cartManager = new CartManager('./cart.json')
     try {
-        let prod = await prodManager.addingProductsCart(prodId)
-        res.send('hola')
+        let prod = await cartManager.addingProductsCart(prodId)
+        res.send(prod)
 
     } catch (err) {
-        console.log(err)
+        res.status(500).send(err)
     }
 })
 
 //esto me carga el carrito con lo recibido arriba y me da el total de productos del mismo
 
 routerCart.get('/', async (req, res) => {
+    try {
         console.log(this.cart)
         let prodInCart = await fs.promises.readFile('./api/cart/cart.json', 'utf-8')
         prodInCart = JSON.parse(prodInCart)
-        let totalProd = [...this.cart,...prodInCart]
-        await fs.promises.writeFile('./api/cart/cart.json', JSON.stringify(totalProd, null, 2), 'utf-8')
+        let totalProd = [this.cart, ...prodInCart]
         res.status(500).send({ 'Carrito': totalProd })
+    } catch (err) {
+        res.status(500).send('carrito vacio' + err)
+    }
 
 })
 
-module.exports =routerCart  
+module.exports = routerCart  

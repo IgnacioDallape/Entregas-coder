@@ -4,7 +4,7 @@ const { Router } = express
 const uuid4 = require('uuid4');
 
 
-class productManager {
+class ProductManager {
     constructor() {
         this.products = []
     }
@@ -188,7 +188,7 @@ class productManager {
     }
 }
 
-const myProduct = new productManager()
+const myProduct = new ProductManager()
 async function addingFunction(title, description, price, thumbnail, code, stock, status, category) {
     await myProduct.addProducts(
         title = title,
@@ -204,4 +204,4 @@ async function addingFunction(title, description, price, thumbnail, code, stock,
 
 //
 
-module.exports = productManager
+module.exports = ProductManager

@@ -1,6 +1,6 @@
 const express = require('express')
 const { Router } = express
-const productManager = require('./ProductManager')
+const ProductManager = require('./ProductManager')
 const routerProducts = new Router()
 
 const bodyParser = require('body-parser');
@@ -9,7 +9,7 @@ routerProducts.use(bodyParser.json());
 
 routerProducts.get('/', async (req, res) => {
     try{
-        const newProduct = new productManager('./products.json')
+        const newProduct = new ProductManager('./products.json')
         let resp = await newProduct.getProducts()
         res.send(resp)
     } catch (err) {
@@ -19,7 +19,7 @@ routerProducts.get('/', async (req, res) => {
 
 routerProducts.get('/:pid', async (req, res) => {
     try {
-        const newProduct = new productManager('.productos.json')
+        const newProduct = new ProductManager('.productos.json')
         let resp = await newProduct.getProductsById(req.params.pid)
         res.send(resp)
     } catch (err) {
@@ -34,7 +34,7 @@ routerProducts.post('/', async (req, res) => {
     const { title, description, price, thumbnail, code, stock, status, category } = req.body;
     console.log(Object.values({ title }))
     try {
-        let newProduct = new productManager('./productos.json')
+        let newProduct = new ProductManager('./productos.json')
         let a = await newProduct.addProducts(title, description, price, thumbnail, code, stock, status, category)
         if (a == false) {
             res.send('error')
@@ -53,7 +53,7 @@ routerProducts.post('/', async (req, res) => {
 
 routerProducts.put('/:pid', async (req, res) => {
 
-    let newProduct2 = new productManager('./productos.json')
+    let newProduct2 = new ProductManager('./productos.json')
     let prodId = req.params.pid
     let prodBody = req.body
     let prodItem = Object.keys(prodBody)
@@ -82,7 +82,7 @@ routerProducts.put('/:pid', async (req, res) => {
 
 routerProducts.delete('/:pid', async (req, res) => {
     let prodId = req.params.pid
-    const newProduct = new productManager('./products.json')
+    const newProduct = new ProductManager('./products.json')
     let resp = await newProduct.deleteProducts(prodId)
     res.send('producto eliminado')
 
