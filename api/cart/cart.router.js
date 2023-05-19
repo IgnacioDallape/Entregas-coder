@@ -10,10 +10,12 @@ const CartManager = require('./cartManager')
 
 routerCart.post('/', async (req, res) => {
     try {
-        let cartMan = new CartManager();
-        await cartMan.getCartProducts();
+        let cartMan = new CartManager('/cart.json');
+        cartMan = await cartMan.getCartProducts();
+        console.log(cartMan,222)
 
-        if (cartMan.cart.length > 0) {
+
+        if (cartMan.length > 0) {
             const cartJson = JSON.stringify(cartMan.cart);
 
             fs.writeFile(__dirname + '/cart.json', cartJson, 'utf-8', async (err) => {
