@@ -3,7 +3,6 @@ const express = require('express')
 const { Router } = express
 const uuid4 = require('uuid4');
 
-
 class ProductManager {
     constructor() {
         this.products = []
@@ -37,10 +36,12 @@ class ProductManager {
                             return this.products
                         } else {
                             console.log('producto repetido')
+                            return false
                         }
 
                     } else {
                         console.log('producto repetido')
+                        return false
                     }
                 } else {
                     console.log('array vacio')
@@ -57,13 +58,13 @@ class ProductManager {
             }
         } else {
             console.log('complete todos los campos')
+            return false
         }
 
     }
 
     async getProducts() {
         try {
-            if (fs.existsSync('./api/ProductManager/productos.json')) {
                 let read = await fs.promises.readFile('./api/ProductManager/productos.json', 'utf-8')
                 if (read != undefined && read != null && read.length > 0) {
                     let readParsed = JSON.parse(read)
@@ -73,12 +74,9 @@ class ProductManager {
                 } else {
                     return this.products = []
                 }
-            } else {
-                console.log('El archivo no existe');
-                return this.products = []
-            }
         } catch (err) {
             console.log(err, 'error aca')
+            return this.products = []
         }
     }
 
