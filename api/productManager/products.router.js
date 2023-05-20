@@ -1,6 +1,6 @@
 const express = require('express')
 const { Router } = express
-const ProductManager = require('./ProductManager')
+const ProductManager = require('./asdas')
 const routerProducts = new Router()
 
 const bodyParser = require('body-parser');

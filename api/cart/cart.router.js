@@ -1,7 +1,7 @@
 const fs = require('fs')
 const express = require('express')
 const { Router } = express
-const ProductManager = require('../ProductManager/ProductManager')
+const ProductManager = require('../ProductManager/asdas')
 const routerCart = new Router()
 const CartManager = require('./cartManager')
 
