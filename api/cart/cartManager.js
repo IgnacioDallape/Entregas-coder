@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const express = require('express');
-const ProductManager = require('../ProductManager/asdas');
+const ProductManager = require('../ProductManager/ProductManager');
 const uuid4 = require('uuid4');
 
 class CartManager {
