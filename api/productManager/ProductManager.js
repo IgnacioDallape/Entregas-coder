@@ -8,8 +8,8 @@ class ProductManager {
         this.products = []
     }
 
-    async addProducts(title, description, price, thumbnail, code, stock, status, category) {
-        if (title != undefined && description != undefined && price != undefined && thumbnail != undefined && code != undefined && stock != undefined && status != undefined && category != undefined) {
+    async addProducts(title, description, price, thumbnail = [], code, stock, status = true, category) {
+        if (title != undefined && description != undefined && price != undefined && code != undefined && stock != undefined && category != undefined) {
             try {
                 const newProduct = {
                     title: title,
@@ -24,7 +24,6 @@ class ProductManager {
                 }
 
                 let prod = await this.getProducts()
-                prod = Object.values(prod)
                 let codingView = prod.map(x => x.code)
                 if (prod.length > 0) {
                     if ((codingView.find((e) => e.code !== code))) {
@@ -68,8 +67,7 @@ class ProductManager {
                 let read = await fs.promises.readFile('./api/ProductManager/productos.json', 'utf-8')
                 if (read != undefined && read != null && read.length > 0) {
                     let readParsed = JSON.parse(read)
-                    readParsed = Object.values(readParsed)
-                    this.products = Array.isArray(readParsed) ? readParsed : []
+                    this.products = readParsed
                     return this.products
                 } else {
                     return this.products = []
@@ -83,8 +81,7 @@ class ProductManager {
     async getProductsById(id) {
         try {
             let prod = await this.getProducts()
-            let prodValues = Object.values(prod)
-            let finding = prodValues.find(product => product.id == id)
+            let finding = prod.find(product => product.id == id)
             if (finding) {
                 console.log('producto  encotrado con id: ' + id)
                 return finding
@@ -98,74 +95,40 @@ class ProductManager {
         }
     }
 
-    async updateProducts(item, modification, id) {
-        try {
-
-            if (item != undefined && modification != undefined && id != undefined) {
-                let prod = await this.getProducts()
-                let prodValues = Object.values(prod)
-                console.log(prodValues[4])
-                let index = prodValues.findIndex((prod) => prod.id == id)
-                let newItem = modification
-                if (index !== -1) {
-                    let mod = item
-                    if (mod == 'title') {
-                        prodValues[index].title = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'description') {
-                        prodValues[index].description = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'price') {
-                        prodValues[index].price = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'thumbnail') {
-                        prodValues[index].thumbnail = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'code') {
-                        prodValues[index].code = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'status') {
-                        prodValues[index].status = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'stock') {
-                        prodValues[index].stock = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    } else if (mod == 'category') {
-                        prodValues[index].category = newItem;
-                        await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(prodValues, null, 2), 'utf-8');
-                        console.log(`El producto con id ${id} se actualizó correctamente, se actualizó su ${item}`);
-                        return prodValues[index];
-                    }
-                    else {
-                        console.log('error al cambiar parametro');
-                    }
-                } else {
-                    console.log('no se encuentra un producto con ese id')
-                }
-            } else {
-                console.log('complete todos los campos')
-
+    async updateProducts(productUpdated, id){
+        try{
+            await this.getProducts()
+            let findingProduct = await this.products.find( product => product.id == id)
+            if(!findingProduct){
+                console.log(`Does not exist a product with the same id ${id}`)
+                return false
             }
+            let findingCode = this.products.find( product => product.code === productUpdated.code)
+            
+            if(findingCode){
+                console.log(`exist a product with the same code ${productUpdated.code}`)
+                return false
+            }
+            
+            let findingIndex = this.products.findIndex( product => product.id === id)
+            if(findingIndex == -1){
+                console.log('producto no encontrado')
+                return false
+            }
+
+            this.products[findingIndex] = {...this.products[findingIndex], ...productUpdated}
+            console.log(this.products[findingIndex])
+            
+            await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8');        
+            return this.products
+
         } catch (err) {
-            console.log('error ', err)
+            console.log('error')
+            return false
         }
-
-
     }
+
+
     async deleteProducts(id) {
         try {
             let prod = await this.getProducts()
@@ -182,6 +145,7 @@ class ProductManager {
             }
         } catch (err) {
             console.log(err)
+            return false
         }
     }
 }
@@ -200,6 +164,6 @@ async function addingFunction(title, description, price, thumbnail, code, stock,
     )
 }
 
-//
+
 
 module.exports = ProductManager

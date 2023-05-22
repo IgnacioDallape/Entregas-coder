@@ -4,6 +4,7 @@ const { Router } = express
 const ProductManager = require('../ProductManager/ProductManager')
 const routerCart = new Router()
 const CartManager = require('./cartManager')
+const cartManager = new CartManager()
 
 
 //esto crea el carrito o elimina todo lo que tiene dentro
@@ -50,9 +51,10 @@ routerCart.post('/', async (req, res) => {
 
 routerCart.post('/:cid/products/:pid', async (req, res) => {
     let prodId = req.params.pid
+    let cartId = req.params.cid
     let cartManager = new CartManager('./cart.json')
     try {
-        let prod = await cartManager.addingProductsCart(prodId)
+        let prod = await cartManager.addingProductsCart(prodId,cartId)
         res.send(prod)
 
     } catch (err) {
@@ -62,13 +64,11 @@ routerCart.post('/:cid/products/:pid', async (req, res) => {
 
 //esto me carga el carrito con lo recibido arriba y me da el total de productos del mismo
 
-routerCart.get('/', async (req, res) => {
+routerCart.get('/:cid', async (req, res) => {
+    let cartId = req.params.cid
     try {
-        console.log(this.cart)
-        let prodInCart = await fs.promises.readFile('./api/cart/cart.json', 'utf-8')
-        prodInCart = JSON.parse(prodInCart)
-        let totalProd = [this.cart, ...prodInCart]
-        res.status(500).send({ 'Carrito': totalProd })
+        let prodInCart = await cartManager.getCartProductsById(cartId)
+        res.status(500).send({ 'Carrito': prodInCart })
     } catch (err) {
         res.status(500).send('carrito vacio' + err)
     }

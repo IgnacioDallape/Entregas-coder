@@ -61,7 +61,7 @@ routerProducts.put('/:pid', async (req, res) => {
     let promises = []
 
     prodItem.forEach(key => {
-        let prom = newProduct2.updateProducts(key, prodBody[key], prodId)
+        let prom = newProduct2.updateProducts(prodBody, prodId)
         promises.push(prom)
     })
 

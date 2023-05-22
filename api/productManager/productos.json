@@ -8,7 +8,7 @@
     "stock": 25,
     "status": true,
     "category": "verdura",
-    "id": "3f1afe10-0209-412f-8bf6-26561d24eb65"
+    "id": "2"
   },
   {
     "title": "zanahoria",
@@ -19,18 +19,7 @@
     "stock": 15,
     "status": true,
     "category": "verdura",
-    "id": "16664bb1-f66a-425d-9b70-09970e1f9488"
-  },
-  {
-    "title": "camote",
-    "description": "Es un camote",
-    "price": 400,
-    "thumbnail": "Sin imagen",
-    "code": "camote123",
-    "stock": 12,
-    "status": true,
-    "category": "verdura",
-    "id": "b55a07cc-70f8-484b-a1e6-3744300a8bf4"
+    "id": "3"
   },
   {
     "title": "sandia",
@@ -41,6 +30,39 @@
     "stock": 22,
     "status": true,
     "category": "verdura",
-    "id": "f98f244b-b11a-4df1-9fbc-1da702885002"
+    "id": "5"
+  },
+  {
+    "title": "asdasd",
+    "description": "Es una papa",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "asdasd",
+    "stock": 25,
+    "status": true,
+    "category": "verdura",
+    "id": "6"
+  },
+  {
+    "title": "camote 2.0",
+    "description": "Es un camotote",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "hola",
+    "stock": 25,
+    "status": true,
+    "category": "verdura",
+    "id": "d02ec425-4e7b-40cf-a3d9-db85e8a8f719"
+  },
+  {
+    "title": "camote 2.02",
+    "description": "Es un camotote",
+    "price": 300,
+    "thumbnail": "Sin imagen",
+    "code": "holaaa",
+    "stock": 25,
+    "status": true,
+    "category": "verdura",
+    "id": "467b35e5-16da-4af7-b084-57bb5602ec9f"
   }
 ]
