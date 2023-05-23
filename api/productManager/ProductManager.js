@@ -91,7 +91,7 @@ class ProductManager {
             }
 
         } catch (err) {
-            console.log(err)
+            console.log(err,222)
         }
     }
 
@@ -105,8 +105,8 @@ class ProductManager {
             }
             let findingCode = this.products.find( product => product.code === productUpdated.code)
             
-            if(findingCode){
-                console.log(`exist a product with the same code ${productUpdated.code}`)
+            if(!findingCode){
+                console.log(`does not exist a product with the same code ${productUpdated.code}`)
                 return false
             }
             

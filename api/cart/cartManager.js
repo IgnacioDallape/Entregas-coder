@@ -17,14 +17,11 @@ class CartManager {
                 console.log('El producto no existe en stock');
                 return false;
             }
-    
             let cartProd = await this.getCartProducts();
-    
             if (cartProd) {
                 cartProd = JSON.parse(cartProd);
     
                 let cartIndex = cartProd.findIndex(cart => cart.Cid === cartId);
-    
                 if (cartIndex !== -1) {
                     let existingProduct = cartProd[cartIndex].Products.find(product => product.id === id);
     

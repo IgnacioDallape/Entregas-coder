@@ -11,41 +11,23 @@ const cartManager = new CartManager()
 
 routerCart.post('/', async (req, res) => {
     try {
-        let cartMan = new CartManager('/cart.json');
-        cartMan = await cartMan.getCartProducts();
-        console.log(cartMan,222)
-
-
-        if (cartMan.length > 0) {
-            const cartJson = JSON.stringify(cartMan.cart);
-
-            fs.writeFile(__dirname + '/cart.json', cartJson, 'utf-8', async (err) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Error al escribir en el archivo');
-                } else {
-                    let cartData = await fs.readFile(__dirname + '/cart.json', 'utf-8');
-                    res.send({ productos: JSON.parse(cartData) });
-                }
-            });
+        let cartManager1 = await cartManager.getCartProducts();
+        console.log(cartManager1)
+        if(cartManager1 !== "" ){
+            cartManager1 = JSON.parse(cartManager1)
+            console.log(cartManager,222)
+            res.send(cartManager1)
         } else {
-            fs.writeFile(__dirname + '/cart.json', '', 'utf-8', (err) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Error al escribir en el archivo');
-                } else {
-                    res.send({ productos: [] });
-                }
-            });
+            console.log(`Cart cant added`)
+            res.status(500).send('carrito vacio')
+            return
         }
+
     } catch (err) {
-        console.log(err);
-        res.status(500).send('Error en el servidor');
+        console.log(err);   
+        res.status(500).send(err);
     }
 });
-
-
-
 
 //le agrego productos con el id de los que estan cargados en productos.json
 
@@ -54,8 +36,14 @@ routerCart.post('/:cid/products/:pid', async (req, res) => {
     let cartId = req.params.cid
     let cartManager = new CartManager('./cart.json')
     try {
-        let prod = await cartManager.addingProductsCart(prodId,cartId)
-        res.send(prod)
+        let cart = await cartManager.addingProductsCart(prodId,cartId)
+        console.log(cart,22)
+        if(cart == false){
+            console.log(`Cart cant added`)
+            res.status(500).send('error en añadir producto')
+            return
+        }
+        res.send(cart)
 
     } catch (err) {
         res.status(500).send(err)
@@ -68,7 +56,12 @@ routerCart.get('/:cid', async (req, res) => {
     let cartId = req.params.cid
     try {
         let prodInCart = await cartManager.getCartProductsById(cartId)
-        res.status(500).send({ 'Carrito': prodInCart })
+        if(!prodInCart){
+            console.log(`cant get cart`)
+            res.status(500).send('error en el servidor')
+            return
+        }
+        res.status(200).send({ 'Carrito': prodInCart })
     } catch (err) {
         res.status(500).send('carrito vacio' + err)
     }
