@@ -11,20 +11,15 @@ const cartManager = new CartManager()
 
 routerCart.post('/', async (req, res) => {
     try {
-        let cartManager1 = await cartManager.getCartProducts();
-        console.log(cartManager1)
-        if(cartManager1 !== "" ){
-            cartManager1 = JSON.parse(cartManager1)
-            console.log(cartManager,222)
-            res.send(cartManager1)
-        } else {
+        let isCartAdded = await cartManager.addCart();
+        if (!isCartAdded) {
             console.log(`Cart cant added`)
-            res.status(500).send('carrito vacio')
+            res.status(500).send(`Cart cant added`)
             return
         }
-
+        res.send(isCartAdded)
     } catch (err) {
-        console.log(err);   
+        console.log(`Error ${err}`)
         res.status(500).send(err);
     }
 });
@@ -34,7 +29,7 @@ routerCart.post('/', async (req, res) => {
 routerCart.post('/:cid/products/:pid', async (req, res) => {
     let prodId = req.params.pid
     let cartId = req.params.cid
-    let cartManager = new CartManager('./cart.json')
+
     try {
         let cart = await cartManager.addingProductsCart(prodId,cartId)
         console.log(cart,22)

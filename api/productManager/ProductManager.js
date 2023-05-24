@@ -105,7 +105,7 @@ class ProductManager {
             }
             let findingCode = this.products.find( product => product.code === productUpdated.code)
             
-            if(!findingCode){
+            if(findingCode){
                 console.log(`does not exist a product with the same code ${productUpdated.code}`)
                 return false
             }
@@ -116,7 +116,7 @@ class ProductManager {
                 return false
             }
 
-            this.products[findingIndex] = {...this.products[findingIndex], ...productUpdated}
+            this.products[findingIndex] = {...this.products[findingIndex], ...productUpdated, id: id}
             console.log(this.products[findingIndex])
             
             await fs.promises.writeFile('./api/ProductManager/productos.json', JSON.stringify(this.products, null, 2), 'utf-8');        

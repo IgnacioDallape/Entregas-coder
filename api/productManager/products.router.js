@@ -25,7 +25,6 @@ routerProducts.get('/:pid', async (req, res) => {
     try {
         let resp = await newProduct.getProductsById(req.params.pid)
         if (!resp) {
-            console.log(resp)
             res.status(404).send(`Product not found`)
             return
         }

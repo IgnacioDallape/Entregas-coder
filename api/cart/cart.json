@@ -1,63 +1,28 @@
 [
   {
-    "Cid": "3",
-    "Products": [
-      {
-        "id": "5",
-        "quantity": 1
-      },
-      {
-        "id": "2",
-        "quantity": 1
-      }
-    ]
-  },
-  {
-    "Cid": "1",
-    "Products": [
-      {
-        "id": "5",
-        "quantity": 2
-      },
-      {
-        "id": "2",
-        "quantity": 8
-      }
-    ]
-  },
-  {
-    "Cid": "2",
-    "Products": [
+    "Cid": "8ef2ab30-20ee-411a-be4f-aa9b6dc56382",
+    "products": [
       {
         "id": "2",
         "quantity": 3
       },
       {
-        "id": "6",
-        "quantity": 2
+        "id": "3",
+        "quantity": 4
       }
     ]
   },
   {
-    "Cid": "4",
-    "Products": [
-      {
-        "id": "2",
-        "quantity": 2
-      }
-    ]
-  },
-  {
-    "Cid": "5",
-    "Products": [
-      {
-        "id": "2",
-        "quantity": 2
-      },
+    "Cid": "3dce7ed1-b31c-49eb-a0f8-e651897a7741",
+    "products": [
       {
         "id": "3",
-        "quantity": 1
+        "quantity": 3
       }
     ]
+  },
+  {
+    "Cid": "8ee896f1-f713-4590-924e-4f3c25f48809",
+    "products": []
   }
 ]
