@@ -1,11 +1,33 @@
-const express = require ('express');
-const { Router } = express;
-const router = new Router();
-const fs = require('fs');
-const ProductManager = require('../api/ProductManager/ProductManager');
+const ProductManager = require("../../api/ProductManager/ProductManager");
+const socket = io();
+const list = document.getElementById('list');
 
 
 
+socket.on('data', (data) => {
+    render(data)
+});
 
 
-module.exports = router;
+const render = (data) => {
+    console.log(data)
+    const a = data.map( e => {
+        return(
+            `
+                name: ${e.name} and price: ${e.price}
+            `
+        )
+    })
+    const listItem = document.createElement('li');
+    listItem.textContent = a;
+    list.appendChild(listItem);
+}
+
+
+const mostarandoProductos = async () => {
+    let a = new ProductManager()
+    let b = await a.getProducts()
+    console.log(b)
+}
+
+

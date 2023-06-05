@@ -1,0 +1,1 @@
+console.log('estas en el index del cliente')

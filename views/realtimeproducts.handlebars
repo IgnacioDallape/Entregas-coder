@@ -1,3 +1,35 @@
+<!DOCTYPE html>
+<html>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/realtimeproducts"></script>
+<head>
+    
+    <title>Datos en tiempo real</title>
+</head>
+
+<body onclick="return mostarandoProductos()">
+    <h1>Bienvenido/a</h1>
+    <form onsubmit="return ">
+
+        <label for="idProd"> Ingrese el numero de id del producto </label>
+        <br>
+        <input type="text" value="" id="idProd" placeholder="ingrese el id">
+        <br>
+        <label for="idProd"> Ingrese el nombre del producto </label>
+        <br>
+        <input type="text" value="" id="nameProd" placeholder="ingrese el nombre">
+        <br>
+        <label for="idProd"> Ingrese el precio del producto </label>
+        <br>
+        <input type="text" value="" id="prProd" placeholder="ingrese el precio">
+        <br>
+        <input type="submit" value="Enviar" class="">
+    </form>
+
+    <h1>Datos en tiempo real:</h1>
+    <ul id="list"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/realtimeproducts.js"></script>
+</body>
+
+</html>
