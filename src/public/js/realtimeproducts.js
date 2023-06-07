@@ -1,4 +1,3 @@
-const ProductManager = require("../../api/ProductManager/ProductManager");
 const socket = io();
 const list = document.getElementById('list');
 
